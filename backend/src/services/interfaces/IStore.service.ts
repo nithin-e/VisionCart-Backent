@@ -1,0 +1,10 @@
+import { IStore } from '../../entities/store.schema.js';
+import { CreateStoreDto, UpdateStoreDto } from '../../dto/store.dto.js';
+
+export interface IStoreService {
+  getAll(): Promise<IStore[]>;
+  getById(id: string): Promise<IStore | null>;
+  create(data: CreateStoreDto): Promise<IStore>;
+  update(id: string, data: UpdateStoreDto): Promise<IStore | null>;
+  delete(id: string): Promise<boolean>;
+}
