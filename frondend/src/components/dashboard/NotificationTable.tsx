@@ -186,7 +186,7 @@ const NotificationTable = () => {
       console.log("Fetching notifications...");
       const response = await notificationsApi.getAll({ search, isRead: filter === "all" ? undefined : filter === "read" ? true : filter === "unread" ? false : undefined });
       console.log("Notifications response:", response);
-      setNotifications(response?.data?.notifications || []);
+      setNotifications(response?.data?.data?.notifications || []);
     } catch (error) {
       console.error("Error fetching notifications:", error);
       toast.error(error.message || 'Failed to fetch notifications');

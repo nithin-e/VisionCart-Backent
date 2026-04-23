@@ -221,7 +221,7 @@ const BannerTable = () => {
       console.log("Fetching banners...");
       const response = await bannersApi.getAll();
       console.log("Banners response:", response);
-      setBanners(response?.data?.banners || []);
+      setBanners(response?.data?.data?.banners || []);
     } catch (error) {
       console.error("Error fetching banners:", error);
       toast.error(error.message || 'Failed to fetch banners');

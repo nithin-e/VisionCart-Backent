@@ -20,7 +20,14 @@ const initialForm = {
 };
 
 const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = false }) => {
-  const [form, setForm] = useState(product || initialForm);
+  const [form, setForm] = useState({
+    ...initialForm,
+    ...product,
+    attributes: {
+      ...initialForm.attributes,
+      ...(product?.attributes || {})
+    }
+  });
   const [imageInput, setImageInput] = useState("");
   const [variant, setVariant] = useState({ color: "", size: "", stock: "" });
   const [variants, setVariants] = useState(product?.variants || []);

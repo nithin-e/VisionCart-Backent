@@ -182,7 +182,7 @@ const SupportTable = () => {
       console.log("Fetching messages...");
       const response = await contactsApi.getAll({ search, status: filter === "all" ? undefined : filter });
       console.log("Messages response:", response);
-      setMessages(response?.data?.messages || []);
+      setMessages(response?.data?.data?.messages || []);
     } catch (error) {
       console.error("Error fetching messages:", error);
       toast.error(error.message || 'Failed to fetch messages');

@@ -236,7 +236,7 @@ const TryAtHomeTable = () => {
       console.log("Fetching bookings...");
       const response = await tryAtHomeApi.getAll({ search, status: filter === "all" ? undefined : filter });
       console.log("Bookings response:", response);
-      setBookings(response?.data?.bookings || []);
+      setBookings(response?.data?.data?.bookings || []);
     } catch (error) {
       console.error("Error fetching bookings:", error);
       toast.error(error.message || 'Failed to fetch bookings');

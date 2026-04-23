@@ -147,7 +147,7 @@ const BlogTable = () => {
       console.log("Fetching blogs...");
       const response = await blogsApi.getAll();
       console.log("Blogs response:", response);
-      setBlogs(response?.data?.blogs || []);
+      setBlogs(response?.data?.data?.blogs || []);
     } catch (error) {
       console.error("Error fetching blogs:", error);
       toast.error(error.message || 'Failed to fetch blogs');

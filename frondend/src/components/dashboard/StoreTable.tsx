@@ -230,7 +230,7 @@ const StoreTable = () => {
       console.log("Fetching stores...");
       const response = await storesApi.getAll();
       console.log("Stores response:", response);
-      setStores(response?.data?.stores || []);
+      setStores(response?.data?.data?.stores || []);
     } catch (error) {
       console.error("Error fetching stores:", error);
       toast.error(error.message || 'Failed to fetch stores');

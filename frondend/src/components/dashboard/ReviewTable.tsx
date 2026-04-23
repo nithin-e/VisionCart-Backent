@@ -14,22 +14,35 @@ const ReviewTable = () => {
   const [hideConfirm, setHideConfirm] = useState(null);
   const pageSize = 10;
 
-  const fetchReviews = async () => {
-    try {
-      setLoading(true);
-      const params = { page, limit: pageSize };
-      if (filter !== "all") {
-        params.isApproved = filter === "approved" ? "true" : "false";
-      }
-      const response = await reviewsApi.getAll(params);
-      setReviews(response?.data?.data?.reviews || []);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      toast.error(error.message || 'Failed to fetch reviews');
-    } finally {
-      setLoading(false);
+ const fetchReviews = async () => {
+  try {
+    setLoading(true);
+
+    const params = {
+      page,
+      limit: pageSize,
+      search,
+      isApproved: filter === "approved" ? true : filter === "hidden" ? false : undefined,
+    };
+
+    if (filter !== "all") {
+      params.isApproved = filter === "approved";
     }
-  };
+
+    console.log("Fetching reviews...", params);
+
+    const response = await reviewsApi.getAll(params);
+
+    console.log("Reviews response:", response);
+
+    setReviews(response?.data?.data?.reviews || []);
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    toast.error(error.message || "Failed to fetch reviews");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchReviews();

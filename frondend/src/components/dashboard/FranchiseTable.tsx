@@ -199,7 +199,7 @@ const FranchiseTable = () => {
       console.log("Fetching applications...");
       const response = await franchisesApi.getAll({ search, status: filter === "all" ? undefined : filter });
       console.log("Applications response:", response);
-      setApplications(response?.data?.applications || []);
+      setApplications(response?.data?.data?.applications || []);
     } catch (error) {
       console.error("Error fetching applications:", error);
       toast.error(error.message || 'Failed to fetch applications');
