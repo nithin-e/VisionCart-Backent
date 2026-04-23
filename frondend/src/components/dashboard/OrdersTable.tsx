@@ -435,16 +435,16 @@ const OrdersTable = () => {
                   <td className="py-4">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-blue-400">
-                        {order.userName.charAt(0).toUpperCase()}
+                        {(order.userName || order.user?.name || 'U').charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <div className="text-white">{order.userName}</div>
-                        <div className="text-xs text-zinc-500">{order.userEmail}</div>
+                        <div className="text-white">{order.userName || order.user?.name || 'Unknown'}</div>
+                        <div className="text-xs text-zinc-500">{order.userEmail || order.user?.email || ''}</div>
                       </div>
                     </div>
                   </td>
                   <td className="py-4 text-zinc-300">
-                    {order.items.length} item{order.items.length > 1 ? "s" : ""}
+                    {(order.items?.length || 0)} item{(order.items?.length || 0) > 1 ? "s" : ""}
                   </td>
                   <td className="py-4">
                     <span className="font-semibold text-white">₹{order.totalAmount}</span>
