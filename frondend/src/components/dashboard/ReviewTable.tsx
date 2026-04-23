@@ -327,7 +327,7 @@ const ReviewTable = () => {
         </table>
       </div>
 
-      {!isLoading && filteredReviews.length === 0 && (
+      {!loading && filteredReviews.length === 0 && (
         <div className="text-center py-12 text-zinc-400">
           <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
           <p>No reviews found</p>

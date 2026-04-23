@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { X, Upload, Plus, Trash2 } from "lucide-react";
+import { categoriesApi } from "@/api/categories";
 
 const initialForm = {
   name: "",
@@ -31,6 +32,23 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
   const [imageInput, setImageInput] = useState("");
   const [variant, setVariant] = useState({ color: "", size: "", stock: "" });
   const [variants, setVariants] = useState(product?.variants || []);
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+        const response = await categoriesApi.getAll();
+        setCategories(response?.data?.categories || []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -174,14 +192,27 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
               />
             </div>
             <div>
-              <label className="block text-sm text-zinc-400 mb-1">Category ID</label>
-              <input
-                name="categoryId"
-                placeholder="Category ID"
-                value={form.categoryId}
-                onChange={handleChange}
-                className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
-              />
+              <label className="block text-sm text-zinc-400 mb-1">Category *</label>
+              {categoriesLoading ? (
+                <select disabled className="w-full p-2.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                  <option>Loading categories...</option>
+                </select>
+              ) : (
+                <select
+                  name="categoryId"
+                  value={form.categoryId}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
+                >
+                  <option value="">Select Category</option>
+                  {categories.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           </div>
 
