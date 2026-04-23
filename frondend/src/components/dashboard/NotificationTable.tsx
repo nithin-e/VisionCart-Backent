@@ -342,7 +342,7 @@ const NotificationTable = () => {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {loading ? (
               <tr>
                 <td colSpan={6} className="py-8 text-center text-zinc-400">Loading...</td>
               </tr>
