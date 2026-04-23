@@ -233,7 +233,7 @@ const CollectionTable = () => {
     try {
       const response = await productsApi.getAll();
       console.log("Products response:", response);
-      setProducts(response?.data?.products || []);
+      const productsArray = response?.data?.products || [];
     } catch (error) {
       console.error("Error fetching products:", error);
     }

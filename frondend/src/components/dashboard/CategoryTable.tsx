@@ -136,7 +136,8 @@ const CategoryTable = () => {
       console.log("Fetching categories...");
       const response = await categoriesApi.getAll();
       console.log("Categories response:", response);
-      setCategories(response?.data?.categories || []);
+      console.log("Categories data:", response?.data?.data?.categories);
+      setCategories(response?.data?.data?.categories || []);
     } catch (error) {
       console.error("Error fetching categories:", error);
       toast.error(error.message || 'Failed to fetch categories');

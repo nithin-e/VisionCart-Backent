@@ -114,7 +114,7 @@ const ReviewTable = () => {
       console.log("Fetching reviews...");
       const response = await reviewsApi.getAll({ search, isApproved: filter === "all" ? undefined : filter === "approved" ? true : filter === "hidden" ? false : undefined });
       console.log("Reviews response:", response);
-      setReviews(response?.data?.reviews || []);
+      setReviews(response?.data?.data?.reviews || []);
     } catch (error) {
       console.error("Error fetching reviews:", error);
       toast.error(error.message || 'Failed to fetch reviews');

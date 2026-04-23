@@ -181,7 +181,7 @@ const CustomersTable = () => {
       console.log("Fetching users...");
       const response = await usersApi.getAll();
       console.log("Users response:", response);
-      setUsers(response?.data?.users || []);
+      setUsers(response?.data?.data?.users || []);
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error(error.message || 'Failed to fetch users');

@@ -64,6 +64,18 @@ const ProductDetails = ({ product, onClose }) => {
     }
   };
 
+  const handleToggleStatus = async () => {
+    try {
+      console.log("Toggling product status:", product._id);
+      await productsApi.update(product._id, { isActive: !product.isActive });
+      toast.success(`Product ${product.isActive ? "deactivated" : "activated"} successfully`);
+      onClose();
+    } catch (error) {
+      console.error("Error toggling status:", error);
+      toast.error("Failed to update status");
+    }
+  };
+
   if (!product) return null;
 
   return (

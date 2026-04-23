@@ -276,7 +276,7 @@ const OrdersTable = () => {
       console.log("📦 [FETCH] .data.orders Type:", typeof response?.data?.orders);
       console.log("📦 [FETCH] .data.orders Is Array?:", Array.isArray(response?.data?.orders));
 
-      const ordersArray = response?.data?.orders || [];
+      const ordersArray = response?.data?.data?.orders || [];
 
       console.log("✅ [FETCH] Extracted Orders Array:", ordersArray);
       console.log("✅ [FETCH] Orders Count:", ordersArray.length);

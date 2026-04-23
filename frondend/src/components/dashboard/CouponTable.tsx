@@ -195,7 +195,7 @@ const CouponTable = () => {
       console.log("Fetching coupons...");
       const response = await couponsApi.getAll();
       console.log("Coupons response:", response);
-      setCoupons(response?.data?.coupons || []);
+      setCoupons(response?.data?.data?.coupons || []);
     } catch (error) {
       console.error("Error fetching coupons:", error);
       toast.error(error.message || 'Failed to fetch coupons');
