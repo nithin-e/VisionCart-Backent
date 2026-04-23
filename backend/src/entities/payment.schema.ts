@@ -62,7 +62,6 @@ const PaymentSchema = new Schema<IPayment>(
   }
 );
 
-PaymentSchema.index({ orderId: 1 }, { unique: true });
 PaymentSchema.index({ status: 1 });
 PaymentSchema.index({ paymentMethod: 1 });
 PaymentSchema.index({ createdAt: -1 });

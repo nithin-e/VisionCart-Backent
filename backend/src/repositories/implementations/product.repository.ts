@@ -38,6 +38,7 @@ export class ProductRepository implements IProductRepository {
   }
 
   async create(data: CreateProductDto): Promise<IProduct> {
+    console.log('...................data',data)
     const product = new Product(data);
     return product.save() as Promise<IProduct>;
   }

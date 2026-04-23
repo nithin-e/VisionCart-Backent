@@ -67,7 +67,6 @@ const CouponSchema = new Schema<ICoupon>(
   }
 );
 
-CouponSchema.index({ code: 1 }, { unique: true });
 CouponSchema.index({ isActive: 1 });
 CouponSchema.index({ expiryDate: 1 });
 

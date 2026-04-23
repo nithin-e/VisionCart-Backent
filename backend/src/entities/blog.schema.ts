@@ -41,7 +41,6 @@ const BlogSchema = new Schema<IBlog>(
   }
 );
 
-BlogSchema.index({ slug: 1 }, { unique: true });
 BlogSchema.index({ isActive: 1 });
 BlogSchema.index({ createdAt: -1 });
 

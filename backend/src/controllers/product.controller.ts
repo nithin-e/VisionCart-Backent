@@ -49,6 +49,7 @@ export class ProductController {
 
   async create(req: Request<unknown, unknown, CreateProductDto>, res: Response, next: NextFunction): Promise<void> {
     try {
+      console.log('......iam here..........')
       const product = await this.productService.create(req.body);
       res.status(StatusCode.CREATED).json({ success: true, message: MESSAGES.PRODUCT.CREATED, data: { _id: product._id } });
     } catch (error) {
