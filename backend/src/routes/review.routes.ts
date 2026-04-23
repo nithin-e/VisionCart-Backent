@@ -12,5 +12,6 @@ const router = Router();
 router.get('/admin/reviews', (req, res, next) => reviewController.getAll(req, res, next));
 router.get('/admin/reviews/:id', (req, res, next) => reviewController.getById(req, res, next));
 router.delete('/admin/reviews/:id', (req, res, next) => reviewController.hide(req, res, next));
+router.patch('/admin/reviews/:id', (req, res, next) => reviewController.show(req, res, next));
 
 export default router;

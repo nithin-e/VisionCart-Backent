@@ -6,4 +6,5 @@ export interface IReviewService {
   getAll(query: ReviewQueryDto): Promise<PaginatedResponse<IReview>>;
   getById(id: string): Promise<IReview | null>;
   hide(id: string): Promise<boolean>;
+  show(id: string): Promise<boolean>;
 }

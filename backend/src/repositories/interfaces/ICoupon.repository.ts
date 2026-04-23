@@ -9,4 +9,5 @@ export interface ICouponRepository {
   create(data: CreateCouponDto): Promise<ICoupon>;
   update(id: string, data: UpdateCouponDto): Promise<ICoupon | null>;
   softDelete(id: string): Promise<boolean>;
+  hardDelete(id: string): Promise<boolean>;
 }

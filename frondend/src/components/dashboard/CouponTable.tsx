@@ -187,6 +187,7 @@ const CouponTable = () => {
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const [coupons, setCoupons] = useState([]);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const pageSize = 10;
 
   const fetchCoupons = async () => {
@@ -232,18 +233,6 @@ const CouponTable = () => {
     }
   };
 
-  const deleteCoupon = async (id) => {
-    try {
-      console.log("Deleting coupon:", id);
-      await couponsApi.delete(id);
-      toast.success('Coupon deleted successfully');
-      fetchCoupons();
-    } catch (error) {
-      console.error("Error deleting coupon:", error);
-      toast.error(error.message || 'Failed to delete coupon');
-    }
-  };
-
   const filteredCoupons = (Array.isArray(coupons) ? coupons : []).filter(coupon => {
     const matchesSearch = coupon.code?.toLowerCase().includes(search.toLowerCase());
     if (filter === "all") return matchesSearch;
@@ -265,7 +254,21 @@ const CouponTable = () => {
   };
 
   const handleDelete = (id) => {
-    deleteCoupon(id);
+    setDeleteConfirm(id);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      console.log("Deleting coupon:", deleteConfirm);
+      await couponsApi.delete(deleteConfirm);
+      toast.success('Coupon deleted successfully');
+      fetchCoupons();
+    } catch (error) {
+      console.error("Error deleting coupon:", error);
+      toast.error(error.message || 'Failed to delete coupon');
+    } finally {
+      setDeleteConfirm(null);
+    }
   };
 
   const handleToggleStatus = (id) => {
@@ -483,6 +486,34 @@ const CouponTable = () => {
           onClose={closeForm}
           onSubmit={handleFormSubmit}
         />
+      )}
+
+      {deleteConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+          <div className="bg-zinc-900 rounded-xl w-full max-w-sm shadow-lg p-6">
+            <div className="text-center">
+              <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">Delete Coupon</h3>
+              <p className="text-zinc-400 mb-6">
+                Are you sure you want to permanently delete this coupon? This action cannot be undone.
+              </p>
+              <div className="flex justify-center gap-3">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-5 py-2.5 rounded bg-zinc-700 text-zinc-200 hover:bg-zinc-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="px-5 py-2.5 rounded bg-red-600 text-white hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

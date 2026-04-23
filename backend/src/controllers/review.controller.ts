@@ -62,4 +62,19 @@ export class ReviewController {
       next(error);
     }
   }
+
+  async show(req: Request<{ id: string }>, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const shown = await this.reviewService.show(req.params.id);
+
+      if (!shown) {
+        res.status(StatusCode.NOT_FOUND).json({ success: false, message: MESSAGES.REVIEW.NOT_FOUND });
+        return;
+      }
+
+      res.json({ success: true, message: "Review is now visible" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

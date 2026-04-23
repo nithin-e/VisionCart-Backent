@@ -30,4 +30,13 @@ export class ReviewService implements IReviewService {
 
     return this.reviewRepository.hide(id);
   }
+
+  async show(id: string): Promise<boolean> {
+    const review = await this.reviewRepository.findById(id);
+    if (!review) {
+      throw new HttpError(MESSAGES.REVIEW.NOT_FOUND, StatusCode.NOT_FOUND);
+    }
+
+    return this.reviewRepository.show(id);
+  }
 }
