@@ -9,6 +9,8 @@ const SettingsTable = () => {
   const [activeSection, setActiveSection] = useState("general");
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState({});
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const fetchSettings = async () => {
     try {
@@ -37,14 +39,19 @@ const SettingsTable = () => {
 
   const updateSettings = async (data) => {
     try {
+      setIsSaving(true);
+      setSaveSuccess(false);
       console.log("Updating settings:", data);
       await settingsApi.update(data);
       toast.success("Settings saved successfully");
       setIsEditing(false);
+      setSaveSuccess(true);
       fetchSettings();
     } catch (error) {
       console.error("Error updating settings:", error);
       toast.error("Failed to save settings");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -81,7 +88,7 @@ const SettingsTable = () => {
     { id: "contact", label: "Contact", icon: Phone },
   ];
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="bg-zinc-900 rounded-xl p-6 w-full">
         <div className="py-8 text-center text-zinc-400">Loading settings...</div>
@@ -100,7 +107,7 @@ const SettingsTable = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {updateMutation.isSuccess && (
+          {setSaveSuccess && (
             <div className="flex items-center gap-2 text-green-400 bg-green-900/30 px-3 py-2 rounded-lg">
               <Check className="w-4 h-4" />
               <span className="text-sm">Settings saved!</span>
@@ -124,11 +131,11 @@ const SettingsTable = () => {
               </button>
               <button
                 onClick={handleSave}
-                disabled={updateMutation.isPending}
+                disabled={isSaving}
                 className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 flex items-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                {updateMutation.isPending ? "Saving..." : "Save Changes"}
+                {isSaving ? "Saving..." : "Save Changes"}
               </button>
             </>
           )}
