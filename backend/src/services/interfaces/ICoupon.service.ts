@@ -8,4 +8,5 @@ export interface ICouponService {
   create(data: CreateCouponDto): Promise<ICoupon>;
   update(id: string, data: UpdateCouponDto): Promise<ICoupon | null>;
   delete(id: string): Promise<boolean>;
+  hardDelete(id: string): Promise<boolean>;
 }

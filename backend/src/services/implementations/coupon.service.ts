@@ -84,10 +84,15 @@ export class CouponService implements ICouponService {
       throw new HttpError(MESSAGES.COUPON.NOT_FOUND, StatusCode.NOT_FOUND);
     }
 
-    if (!existingCoupon.isActive) {
-      throw new HttpError(MESSAGES.COUPON.ALREADY_INACTIVE, StatusCode.BAD_REQUEST);
+    return this.couponRepository.hardDelete(id);
+  }
+
+  async hardDelete(id: string): Promise<boolean> {
+    const existingCoupon = await this.couponRepository.findById(id);
+    if (!existingCoupon) {
+      throw new HttpError(MESSAGES.COUPON.NOT_FOUND, StatusCode.NOT_FOUND);
     }
 
-    return this.couponRepository.softDelete(id);
+    return this.couponRepository.hardDelete(id);
   }
 }

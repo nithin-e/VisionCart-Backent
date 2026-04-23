@@ -6,4 +6,5 @@ export interface IReviewRepository {
   findAll(query: ReviewQueryDto): Promise<PaginatedResponse<IReview>>;
   findById(id: string): Promise<IReview | null>;
   hide(id: string): Promise<boolean>;
+  show(id: string): Promise<boolean>;
 }

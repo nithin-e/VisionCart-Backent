@@ -41,4 +41,9 @@ export class ReviewRepository implements IReviewRepository {
     const result = await Review.findByIdAndUpdate(id, { isApproved: false }, { new: true });
     return result !== null;
   }
+
+  async show(id: string): Promise<boolean> {
+    const result = await Review.findByIdAndUpdate(id, { isApproved: true }, { new: true });
+    return result !== null;
+  }
 }

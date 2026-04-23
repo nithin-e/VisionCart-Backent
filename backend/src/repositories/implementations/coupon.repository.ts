@@ -54,4 +54,9 @@ export class CouponRepository implements ICouponRepository {
     const result = await Coupon.findByIdAndUpdate(id, { isActive: false }, { new: true });
     return result !== null;
   }
+
+  async hardDelete(id: string): Promise<boolean> {
+    const result = await Coupon.findByIdAndDelete(id);
+    return result !== null;
+  }
 }
