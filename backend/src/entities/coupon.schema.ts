@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export type DiscountType = 'percentage' | 'flat';
+export type DiscountType = 'percentage' | 'flat' | 'fixed' | 'shipping';
 
 export interface ICoupon extends Document {
   code: string;
@@ -32,7 +32,7 @@ const CouponSchema = new Schema<ICoupon>(
     },
     discountType: {
       type: String,
-      enum: ['percentage', 'flat'],
+      enum: ['percentage', 'flat', 'fixed', 'shipping'],
       default: 'percentage',
     },
     minOrderAmount: {

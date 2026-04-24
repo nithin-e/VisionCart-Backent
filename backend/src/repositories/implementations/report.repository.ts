@@ -7,12 +7,12 @@ export class ReportRepository implements IReportRepository {
   async getSalesReport(): Promise<SalesReportRaw> {
     const [totalSalesResult, totalOrdersResult, salesByDateResult] = await Promise.all([
       Order.aggregate([
-        { $match: { status: { $ne: 'cancelled' } } },
+        { $match: { status: { $ne: 'cancelled' }, createdAt: { $exists: true, $ne: null } } },
         { $group: { _id: null, total: { $sum: '$totalAmount' } } },
       ]),
       Order.countDocuments({ status: { $ne: 'cancelled' } }),
       Order.aggregate([
-        { $match: { status: { $ne: 'cancelled' } } },
+        { $match: { status: { $ne: 'cancelled' }, createdAt: { $exists: true, $ne: null } } },
         {
           $group: {
             _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
@@ -45,6 +45,7 @@ export class ReportRepository implements IReportRepository {
       User.countDocuments(),
       User.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
       User.aggregate([
+        { $match: { createdAt: { $exists: true, $ne: null } } },
         {
           $group: {
             _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
