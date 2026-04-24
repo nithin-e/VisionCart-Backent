@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = 'adminsecret';
+const JWT_SECRET = process.env.JWT_SECRET || 'adminsecret';
 
 export const adminAuthMiddleware = (
   req: Request,
@@ -20,6 +20,13 @@ export const adminAuthMiddleware = (
 
     const token = authHeader.split(' ')[1];
 
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'No token provided',
+      });
+    }
+
     const decoded = jwt.verify(token, JWT_SECRET) as any;
 
     if (decoded.role !== 'admin') {
@@ -35,7 +42,7 @@ export const adminAuthMiddleware = (
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: 'Invalid token',
+      message: 'Invalid or expired token',
     });
   }
 };

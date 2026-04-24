@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 export interface IAdmin extends Document {
   email: string;
   password: string;
+  role: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -20,13 +21,16 @@ const AdminSchema = new Schema<IAdmin>(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      default: 'admin',
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// 🔐 Hash password
 AdminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
@@ -35,7 +39,6 @@ AdminSchema.pre('save', async function (next) {
   next();
 });
 
-// 🔐 Compare password
 AdminSchema.methods.comparePassword = async function (candidatePassword: string) {
   return bcrypt.compare(candidatePassword, this.password);
 };
