@@ -220,7 +220,7 @@ const CollectionTable = () => {
       console.log("Fetching collections...");
       const response = await collectionsApi.getAll();
       console.log("Collections response:", response);
-      setCollections(response?.data?.collections || []);
+      setCollections(response?.data?.data?.collections || []);
     } catch (error) {
       console.error("Error fetching collections:", error);
       toast.error(error.message || 'Failed to fetch collections');
@@ -234,6 +234,7 @@ const CollectionTable = () => {
       const response = await productsApi.getAll();
       console.log("Products response:", response);
       const productsArray = response?.data?.products || [];
+      setProducts(productsArray);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

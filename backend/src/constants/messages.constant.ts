@@ -44,6 +44,15 @@ export const MESSAGES = {
     INVALID_PRODUCT_IDS: (ids: string) => `Invalid product IDs: ${ids}`,
   },
 
+  // Brands
+  BRAND: {
+    CREATED: 'Brand created successfully',
+    UPDATED: 'Brand updated successfully',
+    DELETED: 'Brand deleted successfully',
+    NOT_FOUND: 'Brand not found',
+    ALREADY_EXISTS: 'Brand with this name already exists',
+  },
+
   // Banners
   BANNER: {
     CREATED: 'Banner created successfully',

@@ -22,6 +22,7 @@ import reportRoutes from './routes/report.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
 import { errorMiddleware } from './middleware/error.middleware.js';
 import adminAuthRoutes from './routes/adminAuth.routes.js';
+import brandRoutes from './routes/brand.routes.js';
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use('/api', contactRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', reportRoutes);
 app.use('/api', settingsRoutes);
+app.use('/api', brandRoutes);
 app.use('/api/admin', adminAuthRoutes);
 
 
