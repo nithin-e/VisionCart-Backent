@@ -11,9 +11,9 @@ const bannerController = new BannerController(bannerService);
 const router = Router();
 
 router.get('/admin/banners', adminAuthMiddleware, (req, res, next) => bannerController.getAll(req, res, next));
-router.get('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.getById(req, res, next));
+router.get('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.getById(req as any, res, next));
 router.post('/admin/banners', adminAuthMiddleware, (req, res, next) => bannerController.create(req, res, next));
-router.put('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.update(req, res, next));
-router.delete('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.delete(req, res, next));
+router.put('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.update(req as any, res, next));
+router.delete('/admin/banners/:id', adminAuthMiddleware, (req, res, next) => bannerController.delete(req as any, res, next));
 
 export default router;

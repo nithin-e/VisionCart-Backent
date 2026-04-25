@@ -11,6 +11,6 @@ const paymentController = new PaymentController(paymentService);
 const router = Router();
 
 router.get('/admin/payments', adminAuthMiddleware, (req, res, next) => paymentController.getAll(req, res, next));
-router.get('/admin/payments/:id', adminAuthMiddleware, (req, res, next) => paymentController.getById(req, res, next));
+router.get('/admin/payments/:id', adminAuthMiddleware, (req, res, next) => paymentController.getById(req as any, res, next));
 
 export default router;

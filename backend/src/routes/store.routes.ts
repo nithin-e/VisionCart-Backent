@@ -11,9 +11,9 @@ const storeController = new StoreController(storeService);
 const router = Router();
 
 router.get('/admin/stores', adminAuthMiddleware, (req, res, next) => storeController.getAll(req, res, next));
-router.get('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.getById(req, res, next));
+router.get('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.getById(req as any, res, next));
 router.post('/admin/stores', adminAuthMiddleware, (req, res, next) => storeController.create(req, res, next));
-router.put('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.update(req, res, next));
-router.delete('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.delete(req, res, next));
+router.put('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.update(req as any, res, next));
+router.delete('/admin/stores/:id', adminAuthMiddleware, (req, res, next) => storeController.delete(req as any, res, next));
 
 export default router;

@@ -11,6 +11,6 @@ const franchiseController = new FranchiseController(franchiseService);
 const router = Router();
 
 router.get('/admin/franchise', adminAuthMiddleware, (req, res, next) => franchiseController.getAll(req, res, next));
-router.put('/admin/franchise/:id/status', adminAuthMiddleware, (req, res, next) => franchiseController.updateStatus(req, res, next));
+router.put('/admin/franchise/:id/status', adminAuthMiddleware, (req, res, next) => franchiseController.updateStatus(req as any, res, next));
 
 export default router;

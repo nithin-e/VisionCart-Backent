@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
+import { redis } from './config/redis.js';
 import productRoutes from './routes/product.routes.js';
 import categoryRoutes from './routes/category.routes.js';
 import collectionRoutes from './routes/collection.routes.js';
@@ -20,9 +21,10 @@ import contactRoutes from './routes/contact.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
 import reportRoutes from './routes/report.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
+import brandRoutes from './routes/brand.routes.js';
+import userAuthRoutes from './routes/userAuth.routes.js';
 import { errorMiddleware } from './middleware/error.middleware.js';
 import adminAuthRoutes from './routes/adminAuth.routes.js';
-import brandRoutes from './routes/brand.routes.js';
 
 dotenv.config();
 
@@ -52,7 +54,7 @@ app.use('/api', reportRoutes);
 app.use('/api', settingsRoutes);
 app.use('/api', brandRoutes);
 app.use('/api/admin', adminAuthRoutes);
-
+app.use('/api/auth', userAuthRoutes);
 
 app.use(errorMiddleware);
 

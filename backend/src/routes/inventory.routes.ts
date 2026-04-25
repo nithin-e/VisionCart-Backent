@@ -11,6 +11,6 @@ const inventoryController = new InventoryController(inventoryService);
 const router = Router();
 
 router.get('/admin/inventory', adminAuthMiddleware, (req, res, next) => inventoryController.getAll(req, res, next));
-router.put('/admin/inventory/:productId', adminAuthMiddleware, (req, res, next) => inventoryController.updateStock(req, res, next));
+router.put('/admin/inventory/:productId', adminAuthMiddleware, (req, res, next) => inventoryController.updateStock(req as any, res, next));
 
 export default router;

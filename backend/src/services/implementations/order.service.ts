@@ -61,7 +61,6 @@ export class OrderService implements IOrderService {
       throw new HttpError(MESSAGES.ORDER.REFUND_INVALID, StatusCode.BAD_REQUEST);
     }
 
-    // TODO: trigger payment gateway refund here
     return this.orderRepository.refund(id, data.reason);
   }
 

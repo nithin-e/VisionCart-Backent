@@ -10,7 +10,6 @@ const notificationController = new NotificationController(notificationService);
 
 const router = Router();
 
-router.get('/admin/notifications', adminAuthMiddleware, (req, res, next) => notificationController.getAll(req, res, next));
-router.post('/admin/notifications', adminAuthMiddleware, (req, res, next) => notificationController.send(req, res, next));
+router.post('/admin/notifications/send', adminAuthMiddleware, (req, res, next) => notificationController.send(req, res, next));
 
 export default router;

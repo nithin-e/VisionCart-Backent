@@ -11,9 +11,9 @@ const couponController = new CouponController(couponService);
 const router = Router();
 
 router.get('/admin/coupons', adminAuthMiddleware, (req, res, next) => couponController.getAll(req, res, next));
-router.get('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.getById(req, res, next));
+router.get('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.getById(req as any, res, next));
 router.post('/admin/coupons', adminAuthMiddleware, (req, res, next) => couponController.create(req, res, next));
-router.put('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.update(req, res, next));
-router.delete('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.delete(req, res, next));
+router.put('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.update(req as any, res, next));
+router.delete('/admin/coupons/:id', adminAuthMiddleware, (req, res, next) => couponController.delete(req as any, res, next));
 
 export default router;

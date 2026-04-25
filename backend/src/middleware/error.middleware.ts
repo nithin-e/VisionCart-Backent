@@ -1,29 +1,36 @@
 import { Request, Response, NextFunction } from 'express';
-import { StatusCode } from '../constants/statusCode.js';
-
-export interface AppError extends Error {
-  statusCode?: number;
-}
-
-export const errorMiddleware = (err: AppError, req: Request, res: Response, next: NextFunction): void => {
-  console.error(err.stack);
-
-  const statusCode = err.statusCode || StatusCode.INTERNAL_SERVER_ERROR;
-  const message = err.message || 'Internal server error';
-
-  res.status(statusCode).json({
-    success: false,
-    message,
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined,
-  });
-};
 
 export class HttpError extends Error {
-  statusCode: number;
-
-  constructor(message: string, statusCode: number = StatusCode.INTERNAL_SERVER_ERROR) {
+  constructor(
+    public message: string,
+    public statusCode: number = 500,
+    public error?: string
+  ) {
     super(message);
-    this.statusCode = statusCode;
-    Error.captureStackTrace(this, this.constructor);
+    this.name = 'HttpError';
   }
 }
+
+export const errorMiddleware = (
+  err: Error | HttpError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  console.error('Error:', err);
+
+  if (err instanceof HttpError) {
+    res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+      error: err.error,
+    });
+    return;
+  }
+
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+  });
+};

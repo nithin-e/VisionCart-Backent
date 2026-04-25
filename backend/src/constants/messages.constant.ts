@@ -193,6 +193,21 @@ export const MESSAGES = {
     EMAIL_INVALID: 'Invalid email format',
   },
 
+  // Auth
+  AUTH: {
+    OTP_SENT: 'OTP sent to email',
+    ACCOUNT_CREATED: 'Account created successfully',
+    OTP_RESENT: 'New OTP sent to email',
+    INVALID_CREDENTIALS: 'Invalid credentials',
+    USER_EXISTS: 'User with this email already exists',
+    OTP_EXPIRED: 'OTP expired or invalid',
+    OTP_INCORRECT: 'Incorrect OTP',
+    OTP_LIMIT_EXCEEDED: 'Too many OTP requests. Please try again after 5 minutes',
+    NO_PENDING_SIGNUP: 'No pending signup found. Please sign up first',
+    ALL_FIELDS_REQUIRED: 'All fields are required',
+    PASSWORD_MIN_LENGTH: 'Password must be at least 6 characters',
+  },
+
   // Error messages from middleware
   ERROR: {
     NOT_FOUND: 'Resource not found',

@@ -11,8 +11,8 @@ const userController = new UserController(userService);
 const router = Router();
 
 router.get('/admin/users', adminAuthMiddleware, (req, res, next) => userController.getAll(req, res, next));
-router.get('/admin/users/:id', adminAuthMiddleware, (req, res, next) => userController.getById(req, res, next));
-router.put('/admin/users/:id/block', adminAuthMiddleware, (req, res, next) => userController.block(req, res, next));
-router.put('/admin/users/:id/unblock', adminAuthMiddleware, (req, res, next) => userController.unblock(req, res, next));
+router.get('/admin/users/:id', adminAuthMiddleware, (req, res, next) => userController.getById(req as any, res, next));
+router.put('/admin/users/:id/block', adminAuthMiddleware, (req, res, next) => userController.block(req as any, res, next));
+router.put('/admin/users/:id/unblock', adminAuthMiddleware, (req, res, next) => userController.unblock(req as any, res, next));
 
 export default router;

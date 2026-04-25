@@ -11,6 +11,6 @@ const contactController = new ContactController(contactService);
 const router = Router();
 
 router.get('/admin/contact', adminAuthMiddleware, (req, res, next) => contactController.getAll(req, res, next));
-router.put('/admin/contact/:id/reply', adminAuthMiddleware, (req, res, next) => contactController.replyToMessage(req, res, next));
+router.put('/admin/contact/:id/reply', adminAuthMiddleware, (req, res, next) => contactController.replyToMessage(req as any, res, next));
 
 export default router;
