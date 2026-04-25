@@ -1,7 +1,7 @@
 import { Admin } from '../../entities/admin.schema';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'adminsecret';
+const JWT_SECRET = process.env.JWT_SECRET || 'adminsecret123';
 
 const validatePassword = (password: string): boolean => {
   const minLength = password.length >= 8;
@@ -29,7 +29,7 @@ export class AdminAuthService {
     }
 
     const token = jwt.sign(
-      { adminId: admin._id, role: admin.role },
+      { adminId: admin._id.toString(), role: admin.role || 'admin' },
       JWT_SECRET,
       { expiresIn: '1d' }
     );

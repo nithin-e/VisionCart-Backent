@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { X, Upload, Plus, Trash2 } from "lucide-react";
-import { categoriesApi } from "@/api/categories";
+import React, { useState } from "react";
+import { X, Upload, Plus } from "lucide-react";
 
 const initialForm = {
   name: "",
-  description: "",
-  categoryId: "",
-  collectionIds: [],
   price: "",
-  discount: "",
   stock: "",
-  images: [],
   brand: "",
-  attributes: {
-    shape: "",
-    color: "",
-    frameType: "",
-    gender: ""
-  }
+  images: []
 };
 
 const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = false }) => {
@@ -30,25 +19,10 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
     }
   });
   const [imageInput, setImageInput] = useState("");
-  const [variant, setVariant] = useState({ color: "", size: "", stock: "" });
-  const [variants, setVariants] = useState(product?.variants || []);
   const [categories, setCategories] = useState([]);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setCategoriesLoading(true);
-        const response = await categoriesApi.getAll();
-        setCategories(response?.data?.categories || []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      } finally {
-        setCategoriesLoading(false);
-      }
-    };
-    fetchCategories();
-  }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,32 +45,17 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
     setForm({ ...form, images: form.images.filter((_, i) => i !== idx) });
   };
 
-  const handleAddVariant = () => {
-    if (variant.color || variant.size) {
-      setVariants([...variants, variant]);
-      setVariant({ color: "", size: "", stock: "" });
-    }
-  };
-
-  const handleRemoveVariant = (idx) => {
-    setVariants(variants.filter((_, i) => i !== idx));
-  };
+  
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const finalData = {
       ...form,
       price: Number(form.price),
-      discount: Number(form.discount) || 0,
-      stock: Number(form.stock),
-      variants
+      stock: Number(form.stock)
     };
     onSubmit(finalData);
   };
-
-  const finalPrice = form.price && form.discount 
-    ? (Number(form.price) - Number(form.discount)).toFixed(2) 
-    : form.price;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
@@ -161,25 +120,6 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
               />
             </div>
             <div>
-              <label className="block text-sm text-zinc-400 mb-1">Discount (₹)</label>
-              <input
-                name="discount"
-                type="number"
-                placeholder="0"
-                value={form.discount}
-                onChange={handleChange}
-                className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
-              />
-              {finalPrice && (
-                <p className="text-xs text-green-400 mt-1">
-                  Final Price: ₹{finalPrice}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
               <label className="block text-sm text-zinc-400 mb-1">Stock *</label>
               <input
                 name="stock"
@@ -189,63 +129,6 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
                 onChange={handleChange}
                 required
                 className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1">Category *</label>
-              {categoriesLoading ? (
-                <select disabled className="w-full p-2.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
-                  <option>Loading categories...</option>
-                </select>
-              ) : (
-                <select
-                  name="categoryId"
-                  value={form.categoryId}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((cat) => (
-                    <option key={cat._id} value={cat._id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          </div>
-
-          <div className="border-t border-zinc-800 pt-4">
-            <h3 className="text-sm font-semibold text-white mb-3">Attributes</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <input
-                name="attr_shape"
-                placeholder="Shape (e.g., round)"
-                value={form.attributes.shape}
-                onChange={handleChange}
-                className="p-2 rounded bg-zinc-800 text-white text-sm border border-zinc-700"
-              />
-              <input
-                name="attr_color"
-                placeholder="Color (e.g., black)"
-                value={form.attributes.color}
-                onChange={handleChange}
-                className="p-2 rounded bg-zinc-800 text-white text-sm border border-zinc-700"
-              />
-              <input
-                name="attr_frameType"
-                placeholder="Frame Type"
-                value={form.attributes.frameType}
-                onChange={handleChange}
-                className="p-2 rounded bg-zinc-800 text-white text-sm border border-zinc-700"
-              />
-              <input
-                name="attr_gender"
-                placeholder="Gender (men/women)"
-                value={form.attributes.gender}
-                onChange={handleChange}
-                className="p-2 rounded bg-zinc-800 text-white text-sm border border-zinc-700"
               />
             </div>
           </div>
@@ -338,7 +221,7 @@ const ProductForm = ({ product, onClose, isEdit = false, onSubmit, submitting = 
                   </div>
                 ))}
               </div>
-            )}
+)}
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-zinc-800">

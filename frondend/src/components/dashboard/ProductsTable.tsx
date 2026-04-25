@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Search, Plus, Edit, Eye, Upload, ChevronLeft, ChevronRight, Package, ToggleLeft, ToggleRight } from "lucide-react";
+import { Search, Edit, Eye, Upload, ChevronLeft, ChevronRight, Package, ToggleLeft, ToggleRight } from "lucide-react";
 import { api } from "@/api/fetch";
 import ProductForm from "./ProductForm";
 import ProductDetails from "./ProductDetails";
@@ -136,9 +136,9 @@ const ProductsTable = () => {
     }
   };
 
-  const updateProductPrice = async (id, price, discount) => {
+  const updateProductPrice = async (id, price) => {
     try {
-      await api.put(`/admin/products/${id}`, { price, discount });
+      await api.put(`/admin/products/${id}`, { price });
       toast.success("Price updated successfully");
       await fetchProducts();
     } catch (err) {
@@ -172,8 +172,8 @@ const ProductsTable = () => {
     updateProductStatus(id, isActive);
   };
 
-  const handleUpdatePrice = (id, price, discount) => {
-    updateProductPrice(id, price, discount);
+  const handleUpdatePrice = (id, price) => {
+    updateProductPrice(id, price);
   };
 
   const openDetails = (product) => {
@@ -273,26 +273,13 @@ const ProductsTable = () => {
               <th className="pb-3 pl-2">Product</th>
               <th className="pb-3">Brand</th>
               <th className="pb-3">Price</th>
-              <th className="pb-3">Discount</th>
-              <th className="pb-3">Final Price</th>
               <th className="pb-3">Stock</th>
               <th className="pb-3">Status</th>
               <th className="pb-3 text-right pr-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {pagedProducts.map((product) => {
-              const finalPrice = product.price - (product.discount || 0);
-console.log("🎨 [RENDER] Component rendering...");
-      console.log("🎨 [RENDER] products state:", products);
-      console.log("🎨 [RENDER] products.length:", products.length);
-      console.log("🎨 [RENDER] filteredProducts:", filteredProducts);
-      console.log("🎨 [RENDER] filteredProducts.length:", filteredProducts.length);
-      console.log("🎨 [RENDER] pagedProducts:", pagedProducts);
-      console.log("🎨 [RENDER] loading:", loading);
-      console.log("🎨 [RENDER] error:", error);
-
-      return (
+            {pagedProducts.map((product) => (
                 <tr key={product._id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30">
                   <td className="py-4 pl-2">
                     <div className="flex items-center gap-3">
@@ -311,8 +298,6 @@ console.log("🎨 [RENDER] Component rendering...");
                   </td>
                   <td className="py-4 text-zinc-300">{product.brand || "-"}</td>
                   <td className="py-4 text-white">₹{product.price}</td>
-                  <td className="py-4 text-red-400">₹{product.discount || 0}</td>
-                  <td className="py-4 text-green-400 font-semibold">₹{finalPrice}</td>
                   <td className="py-4">
                     <div className="flex items-center gap-2">
                       <span className="text-white font-medium">{product.stock}</span>
@@ -355,8 +340,7 @@ console.log("🎨 [RENDER] Component rendering...");
                     </div>
                   </td>
                 </tr>
-              );
-            })}
+            ))}
             </tbody>
           </table>
         )}
