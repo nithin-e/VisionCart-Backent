@@ -24,6 +24,7 @@ const AdminSchema = new Schema<IAdmin>(
     role: {
       type: String,
       default: 'admin',
+      set: (v: string) => v || 'admin',
     },
   },
   {
@@ -32,10 +33,18 @@ const AdminSchema = new Schema<IAdmin>(
 );
 
 AdminSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password')) {
+    if (!this.role) {
+      this.role = 'admin';
+    }
+    return next();
+  }
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  if (!this.role) {
+    this.role = 'admin';
+  }
   next();
 });
 

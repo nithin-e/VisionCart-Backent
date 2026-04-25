@@ -37,7 +37,7 @@ const AdminLogin = () => {
       const response = await apiClient.post("/admin/login", { email, password });
       if (response.data.success) {
         localStorage.setItem("adminToken", response.data.data.token);
-        localStorage.setItem("adminUser", JSON.stringify(response.data.data.user));
+        localStorage.setItem("adminUser", JSON.stringify(response.data.data.admin));
         toast.success("Login successful");
         navigate("/");
       }

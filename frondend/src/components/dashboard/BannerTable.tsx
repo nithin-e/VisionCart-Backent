@@ -6,7 +6,7 @@ import { bannersApi } from "@/api/banners";
 const bannerTypes = [
   { value: "homepage", label: "Homepage", icon: Monitor },
   { value: "category", label: "Category", icon: Smartphone },
-  { value: "popup", label: "Popup", icon: Tablet },
+  { value: "promotional", label: "Promotional", icon: Tablet },
 ];
 
 const BannerForm = ({ banner, onClose, onSubmit, isEdit = false }) => {
@@ -276,7 +276,7 @@ const BannerTable = () => {
     if (filter === "active") return matchesSearch && banner.isActive;
     if (filter === "inactive") return matchesSearch && !banner.isActive;
     if (filter === "homepage") return matchesSearch && banner.type === "homepage";
-    if (filter === "popup") return matchesSearch && banner.type === "popup";
+    if (filter === "popup") return matchesSearch && banner.type === "promotional";
     return matchesSearch;
   });
 
@@ -358,7 +358,7 @@ const BannerTable = () => {
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
             <option value="homepage">Homepage</option>
-            <option value="popup">Popup</option>
+            <option value="promotional">Promotional</option>
           </select>
           <button
             onClick={() => { setIsEdit(false); setSelectedBanner(null); setShowForm(true); }}

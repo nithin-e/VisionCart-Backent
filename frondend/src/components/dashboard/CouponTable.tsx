@@ -9,10 +9,9 @@ const CouponForm = ({ coupon, onClose, onSubmit, isEdit = false }) => {
     discount: "",
     discountType: "percentage",
     minOrderAmount: "",
-    maxDiscount: "",
+    maxDiscountAmount: "",
     expiryDate: "",
-    usageLimit: "",
-    description: ""
+    usageLimit: ""
   });
   const [errors, setErrors] = useState({});
 
@@ -88,6 +87,7 @@ const CouponForm = ({ coupon, onClose, onSubmit, isEdit = false }) => {
                 className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
               >
                 <option value="percentage">Percentage (%)</option>
+                <option value="flat">Flat (₹)</option>
                 <option value="fixed">Fixed (₹)</option>
                 <option value="shipping">Free Shipping</option>
               </select>
@@ -109,10 +109,10 @@ const CouponForm = ({ coupon, onClose, onSubmit, isEdit = false }) => {
             <div>
               <label className="block text-sm text-zinc-400 mb-1">Max Discount (₹)</label>
               <input
-                name="maxDiscount"
+                name="maxDiscountAmount"
                 type="number"
                 placeholder="No limit"
-                value={form.maxDiscount}
+                value={form.maxDiscountAmount}
                 onChange={handleChange}
                 className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none"
               />
@@ -145,17 +145,7 @@ const CouponForm = ({ coupon, onClose, onSubmit, isEdit = false }) => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm text-zinc-400 mb-1">Description</label>
-            <textarea
-              name="description"
-              placeholder="Coupon description..."
-              value={form.description}
-              onChange={handleChange}
-              rows={2}
-              className="w-full p-2.5 rounded bg-zinc-800 text-white border border-zinc-700 focus:border-blue-500 focus:outline-none resize-none"
-            />
-          </div>
+          
 
           <div className="flex justify-end gap-3 pt-4 border-t border-zinc-800">
             <button
@@ -296,6 +286,7 @@ const CouponTable = () => {
 
   const formatDiscount = (coupon) => {
     if (coupon.discountType === "percentage") return `${coupon.discount}%`;
+    if (coupon.discountType === "flat") return `₹${coupon.discount}`;
     if (coupon.discountType === "fixed") return `₹${coupon.discount}`;
     if (coupon.discountType === "shipping") return "Free";
     return coupon.discount;
@@ -364,14 +355,11 @@ const CouponTable = () => {
                       <Tag className="w-4 h-4 text-blue-400" />
                       <span className="font-mono font-bold text-white">{coupon.code}</span>
                     </div>
-                    {coupon.description && (
-                      <div className="text-xs text-zinc-500 mt-1">{coupon.description}</div>
-                    )}
                   </td>
                   <td className="py-4">
                     <span className="font-semibold text-green-400">{formatDiscount(coupon)}</span>
-                    {coupon.maxDiscount && (
-                      <div className="text-xs text-zinc-500">Max: ₹{coupon.maxDiscount}</div>
+                    {coupon.maxDiscountAmount && (
+                      <div className="text-xs text-zinc-500">Max: ₹{coupon.maxDiscountAmount}</div>
                     )}
                   </td>
                   <td className="py-4 text-zinc-300">
@@ -387,7 +375,7 @@ const CouponTable = () => {
                     )}
                   </td>
                   <td className="py-4 text-zinc-300">
-                    {coupon.usageCount} / {coupon.usageLimit || "∞"}
+                    {coupon.usedCount} / {coupon.usageLimit || "∞"}
                   </td>
                   <td className="py-4">
                     {coupon.isActive ? (

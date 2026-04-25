@@ -1,34 +1,29 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { X, Edit, Trash2, Package, Tag, Layers, ToggleLeft, ToggleRight, Image, DollarSign, Box } from "lucide-react";
+import { X, Edit, Trash2, Package, ToggleLeft, ToggleRight, Image } from "lucide-react";
 import { productsApi } from "@/api/products";
 
 const ProductDetails = ({ product, onClose }) => {
   const [activeTab, setActiveTab] = useState("details");
   const [stockInput, setStockInput] = useState(product?.stock || 0);
   const [priceInput, setPriceInput] = useState(product?.price || 0);
-  const [discountInput, setDiscountInput] = useState(product?.discount || 0);
   const [isEditing, setIsEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const updateStock = async (id, stock) => {
     try {
-      console.log("Updating stock:", id, stock);
       await productsApi.update(id, { stock });
       toast.success("Stock updated successfully");
     } catch (error) {
-      console.error("Error updating stock:", error);
       toast.error("Failed to update stock");
     }
   };
 
-  const updatePrice = async (id, price, discount) => {
+  const updatePrice = async (id, price) => {
     try {
-      console.log("Updating price:", id, price, discount);
-      await productsApi.update(id, { price, discount });
+      await productsApi.update(id, { price });
       toast.success("Price updated successfully");
     } catch (error) {
-      console.error("Error updating price:", error);
       toast.error("Failed to update price");
     }
   };
@@ -36,26 +31,24 @@ const ProductDetails = ({ product, onClose }) => {
   const deleteProduct = async (id) => {
     try {
       setDeleting(true);
-      console.log("Deleting product:", id);
       await productsApi.delete(id);
       toast.success("Product deleted successfully");
       onClose();
     } catch (error) {
-      console.error("Error deleting product:", error);
       toast.error("Failed to delete product");
     } finally {
       setDeleting(false);
     }
   };
 
-  const finalPrice = (product?.price || 0) - (product?.discount || 0);
+  const finalPrice = product?.price || 0;
 
   const handleStockUpdate = () => {
     updateStock(product._id, Number(stockInput));
   };
 
   const handlePriceUpdate = () => {
-    updatePrice(product._id, Number(priceInput), Number(discountInput));
+    updatePrice(product._id, Number(priceInput));
   };
 
   const handleDelete = () => {
@@ -66,12 +59,10 @@ const ProductDetails = ({ product, onClose }) => {
 
   const handleToggleStatus = async () => {
     try {
-      console.log("Toggling product status:", product._id);
       await productsApi.update(product._id, { isActive: !product.isActive });
       toast.success(`Product ${product.isActive ? "deactivated" : "activated"} successfully`);
       onClose();
     } catch (error) {
-      console.error("Error toggling status:", error);
       toast.error("Failed to update status");
     }
   };
@@ -157,10 +148,6 @@ const ProductDetails = ({ product, onClose }) => {
                       <span className="text-zinc-400">Price</span>
                       <span className="text-white">₹{product.price}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Discount</span>
-                      <span className="text-red-400">-₹{product.discount || 0}</span>
-                    </div>
                     <div className="flex justify-between border-t border-zinc-800 pt-2">
                       <span className="text-zinc-400">Final Price</span>
                       <span className="text-green-400 font-bold">₹{finalPrice}</span>
@@ -168,42 +155,6 @@ const ProductDetails = ({ product, onClose }) => {
                   </div>
                 </div>
               </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-zinc-400 mb-2">Description</h3>
-                <p className="text-zinc-300 text-sm">{product.description || "No description provided."}</p>
-              </div>
-
-              {product.attributes && Object.keys(product.attributes).length > 0 && (
-                <div>
-                  <h3 className="text-sm font-semibold text-zinc-400 mb-2">Attributes</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {Object.entries(product.attributes).map(([key, value]) => (
-                      <div key={key} className="bg-zinc-800 p-3 rounded-lg">
-                        <span className="text-xs text-zinc-400 capitalize">{key}</span>
-                        <p className="text-white font-medium">{value || "-"}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {product.variants && product.variants.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-semibold text-zinc-400 mb-2">Variants</h3>
-                  <div className="space-y-2">
-                    {product.variants.map((variant, idx) => (
-                      <div key={idx} className="flex items-center justify-between bg-zinc-800 p-3 rounded-lg">
-                        <div className="flex gap-4">
-                          <span className="text-white">Color: {variant.color || "-"}</span>
-                          <span className="text-white">Size: {variant.size || "-"}</span>
-                        </div>
-                        <span className="text-zinc-400">Stock: {variant.stock}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
@@ -221,20 +172,11 @@ const ProductDetails = ({ product, onClose }) => {
                       className="w-full p-2.5 rounded bg-zinc-700 text-white border border-zinc-600"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm text-zinc-400 mb-1">Discount (₹)</label>
-                    <input
-                      type="number"
-                      value={discountInput}
-                      onChange={(e) => setDiscountInput(e.target.value)}
-                      className="w-full p-2.5 rounded bg-zinc-700 text-white border border-zinc-600"
-                    />
-                  </div>
                   <div className="bg-zinc-700 p-3 rounded-lg">
                     <div className="flex justify-between text-sm">
-                      <span className="text-zinc-400">Final Price:</span>
+                      <span className="text-zinc-400">Price:</span>
                       <span className="text-green-400 font-bold">
-                        ₹{(Number(priceInput) - Number(discountInput)).toFixed(2)}
+                        ₹{Number(priceInput).toFixed(2)}
                       </span>
                     </div>
                   </div>

@@ -15,10 +15,8 @@ const SettingsTable = () => {
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      console.log("Fetching settings...");
       const response = await settingsApi.get();
-      console.log("Settings response:", response);
-      setSettings(response?.data || {});
+      setSettings(response?.data?.data || response?.data || {});
     } catch (error) {
       console.error("Error fetching settings:", error);
       toast.error(error.message || 'Failed to fetch settings');
@@ -41,7 +39,6 @@ const SettingsTable = () => {
     try {
       setIsSaving(true);
       setSaveSuccess(false);
-      console.log("Updating settings:", data);
       await settingsApi.update(data);
       toast.success("Settings saved successfully");
       setIsEditing(false);
